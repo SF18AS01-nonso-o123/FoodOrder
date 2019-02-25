@@ -14,12 +14,8 @@ class drinksViewController: UIViewController {
     @IBOutlet weak var cofeeButton: UIButton!
     @IBOutlet weak var teaButton: UIButton!
     var buttonTag: Int = 0
-    /*var item: [String: Double] = [:]
-    var drinks: [String: Double] = [
-        "coffee": 2.20,
-        "tea": 2.20
-    ]*/
-    var drink: [Items] = [
+
+    var drinks: [Items] = [
        Items(item: "coffe", price: 2.20),
        Items(item: "tea", price: 2.20)
     ]
@@ -40,8 +36,18 @@ class drinksViewController: UIViewController {
         super.prepare(for: segue, sender: sender)
         if let optionsViewController: OptionsViewController = segue.destination as? OptionsViewController{
             optionsViewController.totalOrder += drinksTotal
-        }
         
+        let buttons: [UIButton?] = [
+            cofeeButton,
+            teaButton
+        ]
+        for button in buttons {
+            if button?.title(for: .normal) == "✓"{
+                optionsViewController.addedItems.updateValue(drinks[button?.tag ?? 0].price, forKey: drinks[button?.tag ?? 0].item)
+            }
+        }
+            
+        }
     }
     
 
@@ -62,32 +68,22 @@ class drinksViewController: UIViewController {
     }
     
     func addSubTotal(){
-        /*guard let coffeePrice: Double = drinks["coffee"],
-            let teaPrice: Double = drinks["tea"]
-            else {
-                return
-        }*/
-        if buttonTag == 1 && cofeeButton.title(for: .normal) == "✓"{
-           drinksTotal +=  drink[0].price
+        if buttonTag == 0 && cofeeButton.title(for: .normal) == "✓"{
+           drinksTotal +=  drinks[0].price
            
-        }else if buttonTag == 2 && teaButton.title(for: .normal) == "✓"{
-            drinksTotal += drink[1].price //teaPrice
+        }else if buttonTag == 1 && teaButton.title(for: .normal) == "✓"{
+            drinksTotal += drinks[1].price
         }
         totalDrinksLabel.text = String(drinksTotal)
     }
     
     func cancelItem(){
-        /*guard let coffeePrice: Double = drinks["coffee"],
-            let teaPrice: Double = drinks["tea"]
-            else {
-                return
-        }*/
         if drinksTotal != 0 {
-        if buttonTag == 1 && cofeeButton.title(for: .normal) == "Select"{
-            drinksTotal -= drink[0].price //coffeePrice
+        if buttonTag == 0 && cofeeButton.title(for: .normal) == "Select"{
+            drinksTotal -= drinks[0].price
             
-        }else if buttonTag == 2 && teaButton.title(for: .normal) == "Select"{
-            drinksTotal -= drink[1].price //teaPrice
+        }else if buttonTag == 1 && teaButton.title(for: .normal) == "Select"{
+            drinksTotal -= drinks[1].price
         }
         totalDrinksLabel.text = String(drinksTotal)
         }

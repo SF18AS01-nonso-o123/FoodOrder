@@ -13,15 +13,16 @@ class sandwichViewController: UIViewController {
     @IBOutlet weak var eggButton: UIButton!
     @IBOutlet weak var cheeseButton: UIButton!
     @IBOutlet weak var breadButton: UIButton!
-    
+
     var sandwichTotal: Double = 0.0
     var buttonTag: Int = 0
     
-    var sandwiches: [String: Double] = [
-        "egg": 1.25,
-        "cheese": 1.00,
-        "bread": 1.50
+    var sandwiches: [Items] = [
+        Items(item: "egg", price: 1.25),
+        Items(item: "cheese", price: 1.00),
+        Items(item: "bread", price: 1.50)
     ]
+    
     
     
     
@@ -35,8 +36,19 @@ class sandwichViewController: UIViewController {
         super.prepare(for: segue, sender: sender)
         if let optionsViewController: OptionsViewController = segue.destination as? OptionsViewController{
             optionsViewController.totalOrder += sandwichTotal
-        }
         
+        
+        let buttons: [UIButton?] = [
+            eggButton,
+            cheeseButton,
+            breadButton
+        ]
+        for button in buttons {
+            if button?.title(for: .normal) == "✓"{
+                optionsViewController.addedItems.updateValue(sandwiches[button?.tag ?? 0].price, forKey: sandwiches[button?.tag ?? 0].item)
+            }
+        }
+        }
     }
     
     @IBAction func selectButtonPressed(_ sender: UIButton) {
@@ -56,39 +68,27 @@ class sandwichViewController: UIViewController {
     
     
     func addSubTotal(){
-        guard let eggPrice: Double = sandwiches["egg"],
-            let cheesePrice: Double = sandwiches["cheese"],
-            let breadPrice: Double = sandwiches["bread"]
-            else {
-                return
-        }
-        if buttonTag == 3 && eggButton.title(for: .normal) == "✓"{
-            sandwichTotal += eggPrice
+        if buttonTag == 0 && eggButton.title(for: .normal) == "✓"{
+            sandwichTotal += sandwiches[0].price
             
-        }else if buttonTag == 4 && cheeseButton.title(for: .normal) == "✓"{
-            sandwichTotal += cheesePrice
-        }else if buttonTag == 5 && breadButton.title(for: .normal) == "✓"{
-            sandwichTotal += breadPrice
+        }else if buttonTag == 1 && cheeseButton.title(for: .normal) == "✓"{
+            sandwichTotal += sandwiches[1].price
+        }else if buttonTag == 2 && breadButton.title(for: .normal) == "✓"{
+            sandwichTotal += sandwiches[2].price
         }
         totalSandwichLabel.text = String(sandwichTotal)
     
     }
     
     func cancelItem(){
-        guard let eggPrice: Double = sandwiches["egg"],
-            let cheesePrice: Double = sandwiches["cheese"],
-            let breadPrice: Double = sandwiches["bread"]
-            else {
-                return
-        }
         if sandwichTotal != 0 {
-        if buttonTag == 3 && eggButton.title(for: .normal) == "Select"{
-            sandwichTotal -= eggPrice
+        if buttonTag == 0 && eggButton.title(for: .normal) == "Select"{
+            sandwichTotal -= sandwiches[0].price
             
-        }else if buttonTag == 4 && cheeseButton.title(for: .normal) == "Select"{
-            sandwichTotal -= cheesePrice
-        }else if buttonTag == 5 && breadButton.title(for: .normal) == "Select"{
-            sandwichTotal -= breadPrice
+        }else if buttonTag == 1 && cheeseButton.title(for: .normal) == "Select"{
+            sandwichTotal -= sandwiches[1].price
+        }else if buttonTag == 2 && breadButton.title(for: .normal) == "Select"{
+            sandwichTotal -= sandwiches[2].price
         }
         totalSandwichLabel.text = String(sandwichTotal)
         }

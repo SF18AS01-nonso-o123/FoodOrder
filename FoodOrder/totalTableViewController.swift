@@ -9,7 +9,8 @@
 import UIKit
 
 class totalTableViewController: UITableViewController {
-
+    var itemsCheckOut: [Items] = []
+    var total: Double = 0
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,7 +19,11 @@ class totalTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-    }
+            for i in 0..<itemsCheckOut.count{
+                total += itemsCheckOut[i].price
+
+            }
+        }
 
     // MARK: - Table view data source
 
@@ -29,18 +34,24 @@ class totalTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 5
+        return itemsCheckOut.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 
         // Configure the cell...
-
+      
+        cell.textLabel?.text = itemsCheckOut[indexPath.row].item
+        cell.detailTextLabel?.text = String(itemsCheckOut[indexPath.row].price)
         return cell
     }
- 
+   override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    
+    let text: String = "Total:                  \(total)"
+        return text
+    }
 
     /*
     // Override to support conditional editing of the table view.

@@ -9,7 +9,7 @@
 import UIKit
 
 class OptionsViewController: UIViewController {
-
+    var addedItems: [String: Double] = [:]
     @IBOutlet weak var submitButton: UIButton!
     
     @IBOutlet weak var totalPricesLabel: UILabel!
@@ -30,9 +30,25 @@ class OptionsViewController: UIViewController {
             submitButton.isEnabled = true
         }
         totalPricesLabel.text = String(totalOrder)
+        print(addedItems)
+    
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if let navViewcontroller: UINavigationController = segue.destination as? UINavigationController {
+        if let totalsTableViewController: totalTableViewController = navViewcontroller.viewControllers.first as? totalTableViewController {
+            for (item, price) in addedItems {
+                totalsTableViewController.itemsCheckOut.append(Items(item: item, price: price))
+            }
+        }
+        }
+    }
+  
+    
+    
     @IBAction func unwindToOptions(unwindSegue: UIStoryboardSegue) {
+        
         
     }
 

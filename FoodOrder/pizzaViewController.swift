@@ -13,12 +13,14 @@ class pizzaViewController: UIViewController {
     @IBOutlet weak var pizzaTotalLabel: UILabel!
     @IBOutlet weak var pepperoniButton: UIButton!
     @IBOutlet weak var cheesePizzButton: UIButton!
-    
+ 
     var pizzaTotal: Double = 0.0
-    var pizza: [String: Double] = [
-        "pepperoni": 3.50,
-        "cheesePizz": 3.00
+    
+    var pizza: [Items] = [
+        Items(item: "pepperoni", price: 3.50),
+        Items(item: "cheese", price: 3.0)
     ]
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,16 +45,11 @@ class pizzaViewController: UIViewController {
     }
     
     func addSubTotal(){
-        guard let peppPrice: Double = pizza["pepperoni"],
-            let cheesePrice: Double = pizza["cheesePizz"]
-            else {
-                return
-        }
         if buttonTag == 6 && pepperoniButton.title(for: .normal) == "✓"{
-            pizzaTotal += peppPrice
+            pizzaTotal += pizza[0].price
             
         }else if buttonTag == 7 && cheesePizzButton.title(for: .normal) == "✓"{
-            pizzaTotal += cheesePrice
+            pizzaTotal += pizza[1].price
         }
         
         pizzaTotalLabel.text = String(pizzaTotal)
@@ -60,16 +57,11 @@ class pizzaViewController: UIViewController {
     }
     
     func removeItem(){
-        guard let peppPrice: Double = pizza["pepperoni"],
-            let cheesePrice: Double = pizza["cheesePizz"]
-            else {
-                return
-        }
         if buttonTag == 6 && pepperoniButton.title(for: .normal) == "Select"{
-            pizzaTotal -= peppPrice
+            pizzaTotal -= pizza[0].price
             
         }else if buttonTag == 7 && cheesePizzButton.title(for: .normal) == "Select"{
-            pizzaTotal -= cheesePrice
+            pizzaTotal -= pizza[1].price
         }
         
         pizzaTotalLabel.text = String(pizzaTotal)
@@ -80,8 +72,18 @@ class pizzaViewController: UIViewController {
         super.prepare(for: segue, sender: sender)
         if let optionsViewController: OptionsViewController = segue.destination as? OptionsViewController{
             optionsViewController.totalOrder += pizzaTotal
-        }
         
+        
+        let buttons: [UIButton?] = [
+            pepperoniButton,
+            cheesePizzButton
+        ]
+        for button in buttons {
+            if button?.title(for: .normal) == "✓"{
+                optionsViewController.addedItems.updateValue(pizza[button?.tag ?? 0].price, forKey: pizza[button?.tag ?? 0].item)
+            }
+        }
+        }
     }
     
     /*
