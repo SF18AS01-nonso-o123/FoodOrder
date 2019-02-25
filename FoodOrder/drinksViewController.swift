@@ -10,6 +10,7 @@ import UIKit
 
 class drinksViewController: UIViewController {
 
+    //MARK:- Outlets and variables
     @IBOutlet weak var totalDrinksLabel: UILabel!
     @IBOutlet weak var cofeeButton: UIButton!
     @IBOutlet weak var teaButton: UIButton!
@@ -20,18 +21,18 @@ class drinksViewController: UIViewController {
        Items(item: "tea", price: 2.20)
     ]
     
-    
     var drinksTotal: Double = 0.0
    
     
     
-    
+    //MARK:- View did load
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
     
+    //MARK:- Prepare for segue; Transmit data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if let optionsViewController: OptionsViewController = segue.destination as? OptionsViewController{
@@ -50,7 +51,7 @@ class drinksViewController: UIViewController {
         }
     }
     
-
+    //MARK:- Select button pressed
     @IBAction func selectButtonPressed(_ sender: UIButton) {
      
             buttonTag = sender.tag
@@ -67,6 +68,7 @@ class drinksViewController: UIViewController {
             }
     }
     
+    //MARK:- Add sub total
     func addSubTotal(){
         if buttonTag == 0 && cofeeButton.title(for: .normal) == "✓"{
            drinksTotal +=  drinks[0].price
@@ -77,6 +79,7 @@ class drinksViewController: UIViewController {
         totalDrinksLabel.text = String(drinksTotal)
     }
     
+    //MARK:- Remove canceled item
     func cancelItem(){
         if drinksTotal != 0 {
         if buttonTag == 0 && cofeeButton.title(for: .normal) == "Select"{

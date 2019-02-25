@@ -9,21 +9,25 @@
 import UIKit
 
 class OptionsViewController: UIViewController {
+    
+    //MARK:- Outlets and variables
     var addedItems: [String: Double] = [:]
     @IBOutlet weak var submitButton: UIButton!
     
     @IBOutlet weak var totalPricesLabel: UILabel!
     
     var totalOrder: Double = 0.0
+    
+    
+    //MARK:- View did load
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        submitButton.isEnabled = false
+        submitButton.isEnabled = false  //disable submit button until there is an order
         
     }
     
     
+    //MARK:- Enable submit button once there is an order
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if totalOrder > 0{
@@ -34,6 +38,7 @@ class OptionsViewController: UIViewController {
     
     }
     
+    //MARK:- Transfer data to the table view
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if let navViewcontroller: UINavigationController = segue.destination as? UINavigationController {
@@ -46,7 +51,7 @@ class OptionsViewController: UIViewController {
     }
   
     
-    
+    //MARK:-
     @IBAction func unwindToOptions(unwindSegue: UIStoryboardSegue) {
         
         

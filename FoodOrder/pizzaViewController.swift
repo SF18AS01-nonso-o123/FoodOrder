@@ -9,6 +9,8 @@
 import UIKit
 
 class pizzaViewController: UIViewController {
+    
+    //MARK:- Outlets and variables
     var buttonTag: Int = 0
     @IBOutlet weak var pizzaTotalLabel: UILabel!
     @IBOutlet weak var pepperoniButton: UIButton!
@@ -21,13 +23,14 @@ class pizzaViewController: UIViewController {
         Items(item: "cheese", price: 3.0)
     ]
 
-    
+    //MARK:- View did load
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
     
+    //MARK:- Select button pressed
     @IBAction func selectButtonPressed(_ sender: UIButton) {
         buttonTag = sender.tag
         guard sender.title(for: .normal) != nil else {
@@ -44,6 +47,7 @@ class pizzaViewController: UIViewController {
 
     }
     
+    //MARK:- Add sub total
     func addSubTotal(){
         if buttonTag == 6 && pepperoniButton.title(for: .normal) == "✓"{
             pizzaTotal += pizza[0].price
@@ -56,6 +60,7 @@ class pizzaViewController: UIViewController {
         
     }
     
+    //MARK:- Remove canceled item
     func removeItem(){
         if buttonTag == 6 && pepperoniButton.title(for: .normal) == "Select"{
             pizzaTotal -= pizza[0].price
@@ -68,6 +73,7 @@ class pizzaViewController: UIViewController {
         
     }
 
+    //MARK:- Prepare for segue; Transmit data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if let optionsViewController: OptionsViewController = segue.destination as? OptionsViewController{

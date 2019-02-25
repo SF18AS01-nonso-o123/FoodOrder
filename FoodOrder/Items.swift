@@ -7,6 +7,8 @@
 //
 
 import Foundation
+
+//MARK:- Items Struct
 struct Items {
     var item: String
     var price: Double
